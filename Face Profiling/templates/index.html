@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Profiling AI</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background: linear-gradient(to right, #2193b0, #6dd5ed);
+            color: white;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            padding: 30px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            margin: auto;
+        }
+        h1 {
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        input, button {
+            margin-top: 10px;
+        }
+        .result-box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        img {
+            max-width: 250px;
+            border-radius: 10px;
+            border: 3px solid white;
+            margin-top: 10px;
+            transition: transform 0.3s;
+        }
+        img:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <h1> Face Profiling </h1>
+    
+    <div class="container">
+        <form method="post" enctype="multipart/form-data">
+            <input type="file" name="image" class="form-control" required>
+            <button type="submit" class="btn btn-light mt-2">Upload & Analyze</button>
+        </form>
+
+        {% if error %}
+            <p class="text-danger mt-3">{{ error }}</p>
+        {% endif %}
+
+        {% if results %}
+            <div class="result-box mt-4">
+                <h2>Results:</h2>
+                <p><strong>Face Width:</strong> {{ results.face_width }} px</p>
+                <p><strong>Face Height:</strong> {{ results.face_height }} px</p>
+                <p><strong>Forehead Length:</strong> {{ results.forehead_length }} px</p>
+                <p><strong>Eye Distance:</strong> {{ results.eye_distance }} px</p>
+                <p><strong>Predicted Personality:</strong>  {{ results.personality }} </p>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <h4>Original</h4>
+                    <img src="{{ url_for('uploaded_file', filename=results.original_image) }}" alt="Original Face">
+                </div>
+                <div class="col-md-6">
+                    <h4>Processed</h4>
+                    <img src="{{ url_for('uploaded_file', filename='processed/' + results.processed_image) }}" alt="Processed Face">
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+</body>
+</html>
