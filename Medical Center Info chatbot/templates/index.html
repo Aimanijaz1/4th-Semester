@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Medical Center Chatbot</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      background-color: #d0d7de; /* light grey-blue background */
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .chat-container {
+      width: 100%;
+      max-width: 600px;
+      margin: 50px auto;
+      background-color: #f0f4f8; /* light grey-blue */
+      border: 2px solid darkgreen;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(23, 74, 1, 0.2);
+    }
+
+    h2 {
+      text-align: center;
+      color: #0a3d62;
+      border-bottom: 2px solid darkgreen;
+      padding-bottom: 10px;
+    }
+
+    #chat-box {
+      height: 300px;
+      overflow-y: auto;
+      border: 2px solid black;
+      border-radius: 8px;
+      padding: 10px;
+      background-color: #e6ecf1;
+      margin-bottom: 15px;
+    }
+
+    .user-message {
+      background-color: #d0e7ff;
+      border: 1px solid black;
+      padding: 8px 12px;
+      border-radius: 8px;
+      margin: 8px 0;
+      color: #003366;
+    }
+
+    .bot-message {
+      background-color: #cfd8dc;
+      border: 1px solid black;
+      padding: 8px 12px;
+      border-radius: 8px;
+      margin: 8px 0;
+      color: #1b1b1b;
+    }
+
+    #user-input {
+      width: calc(100% - 90px);
+      padding: 10px;
+      border-radius: 5px;
+      border: 2px solid black;
+      outline: none;
+      margin-right: 10px;
+      background-color: #ffffff;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: 2px solid black;
+      border-radius: 5px;
+      background-color: #007acc;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #005f99;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <h2>Medical Center Chatbot</h2>
+    <div id="chat-box"></div>
+    <input type="text" id="user-input" placeholder="Type your message here...">
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <script>
+    function sendMessage() {
+      const inputField = document.getElementById("user-input");
+      const message = inputField.value.trim();
+      if (!message) return;
+
+      const chatBox = document.getElementById("chat-box");
+      chatBox.innerHTML += `<div class="user-message"><b>You:</b> ${message}</div>`;
+      inputField.value = "";
+
+      fetch("/get", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: message })
+      })
+      .then(response => response.json())
+      .then(data => {
+        chatBox.innerHTML += `<div class="bot-message"><b>Bot:</b> ${data.response}</div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+      });
+    }
+
+    document.getElementById("user-input").addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html>
