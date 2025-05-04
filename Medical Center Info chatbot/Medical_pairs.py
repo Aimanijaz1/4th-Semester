@@ -1,6 +1,6 @@
-medical_pairs = [
+prompts = [
     # Greeting and showing options
-    [r"(hi|hello|hey|salaam)", [
+    [r"(hi|hello|hey)", [
     "👋 Hello! Welcome to the Medical Center. How can I assist you today?\n"
     "Here are the things you can ask:\n"
     "1. I want an appointment tomorrow\n"
