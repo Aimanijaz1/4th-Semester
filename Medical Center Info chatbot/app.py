@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from nltk.chat.util import Chat, reflections
-from Medical_pairs import medical_pairs
+from Medical_pairs import prompts
 import random
 
 app = Flask(__name__)
